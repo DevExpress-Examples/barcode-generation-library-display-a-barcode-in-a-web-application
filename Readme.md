@@ -1,7 +1,7 @@
 # How to create and display a BarCode in a web application
 
 
-<p>This example illustrates how you can use our new <a href="http://help.devexpress.com/#DocumentServer/CustomDocument15094">Bar Code Library</a> in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP Handler that will generate and output an image. Here is a code of this handler:</p>
+<p>This example illustrates how you can use our new <a href="http://help.devexpress.com/#DocumentServer/CustomDocument15094">Barcode Generation API</a> in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP Handler that will generate and output an image. Here is a code of this handler:</p>
 <p> </p>
 
 
