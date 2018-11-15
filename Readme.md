@@ -1,3 +1,10 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [BarCodeHandler.ashx](./CS/WebSite/BarCodeHandler.ashx) (VB: [BarCodeHandler.ashx](./VB/WebSite/BarCodeHandler.ashx))
+* [Default.aspx](./CS/WebSite/Default.aspx) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
+* [Default.aspx.cs](./CS/WebSite/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
+<!-- default file list end -->
 # How to create and display a BarCode in a web application
 
 
