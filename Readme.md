@@ -6,6 +6,9 @@
 * [Default.aspx.cs](./CS/WebSite/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
 <!-- default file list end -->
 # How to create and display a BarCode in a web application
+<!-- run online -->
+**[[Run Online]](https://codecentral.devexpress.com/e4716/)**
+<!-- run online end -->
 
 
 <p>This example illustrates how you can use our <a href="https://documentation.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API">Barcode Generation API</a> in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP Handler that will generate and output an image. Here is a code of this handler:</p>
