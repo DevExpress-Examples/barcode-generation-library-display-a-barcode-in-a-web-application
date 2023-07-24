@@ -39,7 +39,7 @@ public class BarCodeHandler : IHttpHandler {
 }
 ```
 
-<p>The <strong>im</strong><strong>g </strong>tag in the main aspx page is defined as follows:</p>
+<p>The <strong>img</strong> tag in the main aspx page is defined as follows:</p>
 
 ```aspx
 <img src="BarCodeHandler.ashx" alt="QRCode" width="200px" height="200px" />
