@@ -15,8 +15,12 @@
 **[[Run Online]](https://codecentral.devexpress.com/e4716/)**
 <!-- run online end -->
 
+## Overview
 
-<p>This example illustrates how you can use our <a href="https://documentation.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API">Barcode Generation API</a> in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP Handler that will generate and output an image. Here is a code of this handler:</p>
+> **Note:**
+>The **Universal Subscription** or an additional **Office File API Subscription** is required to use this example in production code. Please refer to the <a href="https://www.devexpress.com/Buy/NET/">DevExpress Subscription</a> page for pricing information.
+
+This example illustrates how you can use our <a href="https://documentation.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API">Barcode Generation API</a> in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP Handler that will generate and output an image. Here is a code of this handler:
 
 ```cs
 public class BarCodeHandler : IHttpHandler {
@@ -39,12 +43,11 @@ public class BarCodeHandler : IHttpHandler {
 }
 ```
 
-<p>The <strong>img</strong> tag in the main aspx page is defined as follows:</p>
+The **img** tag in the main _aspx_ page is defined as follows:
 
 ```aspx
 <img src="BarCodeHandler.ashx" alt="QRCode" width="200px" height="200px" />
 ```
 
-<p><strong>See Also:</strong></p>
-<p><a href="http://www.codeproject.com/Tips/577385/HTTP-handler-for-image">HTTP-handler for image</a></p>
-<p>The<strong> Universal Subscription</strong> or an additional <strong>Office File API Subscription</strong> is required to use this example in production code. Please refer to the <a href="https://www.devexpress.com/Buy/NET/">DevExpress Subscription</a> page for pricing information.</p>
+## See Also:
+* [HTTP-handler for image](http://www.codeproject.com/Tips/577385/HTTP-handler-for-image)
