@@ -37,11 +37,6 @@ public class BarCodeHandler : IHttpHandler {
 }
 ```
 
-The **img** tag in the main _aspx_ page is defined as follows:
-
-```aspx
-<img src="BarCodeHandler.ashx" alt="QRCode" width="200px" height="200px" />
-```
 ## Files to Review
 
 * [BarCodeHandler.ashx](./CS/WebSite/BarCodeHandler.ashx) (VB: [BarCodeHandler.ashx](./VB/WebSite/BarCodeHandler.ashx))
