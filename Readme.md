@@ -5,9 +5,6 @@
 <!-- default badges end -->
 
 # How to create and display a BarCode in a web application
-<!-- run online -->
-**[[Run Online]](https://codecentral.devexpress.com/128612586/)**
-<!-- run online end -->
 
 ## Overview
 
