@@ -9,8 +9,8 @@
 
 ## Overview
 
-> **Note:**
->The **Universal Subscription** or an additional **Office File API Subscription** is required to use this example in production code. Please refer to the <a href="https://www.devexpress.com/Buy/NET/">DevExpress Subscription</a> page for pricing information.
+ [!Important]  
+> The Universal Subscription or an additional Office File API Subscription is required to use this example in production code. For pricing information, please refer to the [DevExpress Subscription](https://www.devexpress.com/Subscriptions/) page.
 
 This example illustrates how you can use our [Barcode Generation API](https://docs.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API) in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP handler that generates and outputs an image. Here is a code of this handler:
 
