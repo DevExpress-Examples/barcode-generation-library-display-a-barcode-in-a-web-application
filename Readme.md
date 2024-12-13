@@ -1,5 +1,4 @@
 <!-- default badges list -->
-![](https://img.shields.io/endpoint?url=https://codecentral.devexpress.com/api/v1/VersionRange/128612586/24.2.3%2B)
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/E4716)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
@@ -9,8 +8,8 @@
 
 ## Overview
 
-> **Note:**
->The **Universal Subscription** or an additional **Office File API Subscription** is required to use this example in production code. Please refer to the <a href="https://www.devexpress.com/Buy/NET/">DevExpress Subscription</a> page for pricing information.
+ [!Important]  
+> The Universal Subscription or an additional Office File API Subscription is required to use this example in production code. For pricing information, please refer to the [DevExpress Subscription](https://www.devexpress.com/Subscriptions/) page.
 
 This example illustrates how you can use our [Barcode Generation API](https://docs.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API) in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP handler that generates and outputs an image. Here is a code of this handler:
 
