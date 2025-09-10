@@ -41,8 +41,6 @@ public class BarCodeHandler : IHttpHandler {
 * [Default.aspx](./CS/WebSite/Default.aspx) (VB: [Default.aspx](./VB/WebSite/Default.aspx))
 * [Default.aspx.cs](./CS/WebSite/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
 
-## See Also:
-* [HTTP-handler for image](http://www.codeproject.com/Tips/577385/HTTP-handler-for-image)
 <!-- feedback -->
 ## Does this example address your development requirements/objectives?
 
@@ -50,3 +48,4 @@ public class BarCodeHandler : IHttpHandler {
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
