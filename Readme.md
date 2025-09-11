@@ -12,7 +12,7 @@
 > [!Important]  
 > The Universal Subscription or an additional Office File API Subscription is required to use this example in production code. For pricing information, please refer to the [DevExpress Subscription](https://www.devexpress.com/Subscriptions/) page.
 
-This example illustrates how you can use our [Barcode Generation API](https://docs.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API) in ASP.NET to generate and display a barcode image on the webpage. The best approach implies creating a custom HTTP handler that generates and outputs an image. Here is a code of this handler:
+This example illustrates how you can use our [Barcode Generation API](https://docs.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API) in ASP.NET to generate and display a barcode image on the webpage. The best approach is to create a custom HTTP handler that generates and outputs an image. Here is the code of this handler:
 
 ```cs
 public class BarCodeHandler : IHttpHandler {
@@ -41,8 +41,6 @@ public class BarCodeHandler : IHttpHandler {
 * [Default.aspx](./CS/WebSite/Default.aspx)
 * [Default.aspx.cs](./CS/WebSite/Default.aspx.cs)
 
-## See Also:
-* [HTTP-handler for image](http://www.codeproject.com/Tips/577385/HTTP-handler-for-image)
 <!-- feedback -->
 ## Does this example address your development requirements/objectives?
 
@@ -50,3 +48,4 @@ public class BarCodeHandler : IHttpHandler {
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
