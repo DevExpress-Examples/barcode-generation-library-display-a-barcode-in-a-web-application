@@ -5,41 +5,19 @@
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
 
-# How to create and display a BarCode in a web application
+# Bar Generation API - Create and Display Barcodes in a Web Application
 
 ## Overview
 
-> [!Important]  
+> [!Important]
 > The Universal Subscription or an additional Office File API Subscription is required to use this example in production code. For pricing information, please refer to the [DevExpress Subscription](https://www.devexpress.com/Subscriptions/) page.
 
-This example illustrates how you can use our [Barcode Generation API](https://docs.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API) in ASP.NET to generate and display a barcode image on the webpage. The best approach is to create a custom HTTP handler that generates and outputs an image. Here is the code of this handler:
-
-```cs
-public class BarCodeHandler : IHttpHandler {
-    public void ProcessRequest(HttpContext context) {
-        BarCode barCode = new BarCode();
-
-        barCode.Symbology = Symbology.QRCode;
-        barCode.CodeText = "123";
-
-        context.Response.ContentType = "image/png";
-        barCode.Save(context.Response.OutputStream, ImageFormat.Png);
-        context.Response.End();
-    }
-
-    public bool IsReusable {
-        get {
-            return false;
-        }
-    }
-}
-```
+This example uses the [Barcode Generation API](https://docs.devexpress.com/OfficeFileAPI/15094/Barcode-Generation-API) in an ASP.NET application to generate and display a barcode image on the webpage.
 
 ## Files to Review
 
-* [BarCodeHandler.ashx](./CS/WebSite/BarCodeHandler.ashx)
-* [Default.aspx](./CS/WebSite/Default.aspx)
-* [Default.aspx.cs](./CS/WebSite/Default.aspx.cs)
+* [BarcodeGenerationExamples.cs](/CS/BarcodeGenerationExamples.cs)
+* [index.html](/CS/wwwroot/index.html)
 
 <!-- feedback -->
 ## Does This Example Address Your Development Requirements/Objectives?
