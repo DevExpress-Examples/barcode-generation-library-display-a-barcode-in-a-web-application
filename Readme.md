@@ -16,7 +16,7 @@
 DevExpress Barcode Generation API is compatible with the following operating systems and platforms:
 
 * Windows, Linux, macOS
-* .NET 8/9/10, .NET Framework 4.6.2+
+* .NET 8+, .NET Framework 4.6.2+
 * Azure, AWS, Docker
 
 ## Supported Symbologies
@@ -38,11 +38,11 @@ DevExpress Barcode Generation API is compatible with the following operating sys
 
 ## Get Started
 
-### Install the DevExpress.Docs.Barcode NuGet package
+### Install the NuGet Package: DevExpress.Docs.Barcode
 
 ```dotnet add package DevExpress.Docs.Barcode```
 
-### Create a QR Code and Save to PNG
+### Create a QR Code and Save It to PNG
 
 ```csharp
 using System.IO;
@@ -102,5 +102,6 @@ dotnet add package DevExpress.AIIntegration.Docs
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
 
 

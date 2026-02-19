@@ -1,8 +1,9 @@
 using System.Drawing;
-using BarcodeWebApi.Services;
+using DevExpress.Docs.Barcode;
+using DevExpress.Drawing;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BarcodeWebApi.Controllers;
+namespace BarcodeDemoApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,235 +18,563 @@ public class BarcodeController : ControllerBase
         return PhysicalFile(file, "text/html; charset=utf-8");
     }
 
-    [HttpGet("{symbology}")]
-    public IActionResult Generate([ModelBinder(typeof(BarcodeSymbologyModelBinder))] BarcodeSymbology symbology, 
-        [FromQuery] BarcodeRequest req)
+    [HttpGet("aztec")]
+    public IActionResult Aztec([FromQuery] BarcodeRequest req)
     {
-        if (!ValidateRequest(req, out var errorResult))
-            return errorResult;
-
-        var backColor = ColorHelper.GetColor(req.BackColor, Color.White);
-        var foreColor = ColorHelper.GetColor(req.ForeColor, Color.Black);
-        var showText = req.ShowText ?? false;
-
-        byte[] barcodeImage = symbology switch
+        var options = new AztecCodeOptions
         {
-            // 2D Barcodes
-            BarcodeSymbology.Aztec => BarcodeGenerationExamples.GenerateAztec(
-                req.Data, backColor, foreColor, showText, req.AztecErrorCorrectionLevel),
-            
-            BarcodeSymbology.QrCode => BarcodeGenerationExamples.GenerateQrCode(
-                req.Data, backColor, foreColor, showText, req.displayLogo ?? false),
-            
-            BarcodeSymbology.MicroQrCode => BarcodeGenerationExamples.GenerateMicroQrCode(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.QrCodeGS1 => BarcodeGenerationExamples.GenerateQrCodeGS1(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.DataMatrixECC200 => BarcodeGenerationExamples.GenerateDataMatrixECC200(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.DataMatrixGS1 => BarcodeGenerationExamples.GenerateDataMatrixGS1(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.PDF417 => BarcodeGenerationExamples.GeneratePDF417(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.IntelligentMail => BarcodeGenerationExamples.GenerateIntelligentMail(
-                req.Data, backColor, foreColor, showText),
-            
-            // 1D Barcodes
-            BarcodeSymbology.Codabar => BarcodeGenerationExamples.GenerateCodabar(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.Code11 => BarcodeGenerationExamples.GenerateCode11(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.Code128 => BarcodeGenerationExamples.GenerateCode128(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.GS1_128 => BarcodeGenerationExamples.GenerateGS1128(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.Code39 => BarcodeGenerationExamples.GenerateCode39(
-                req.Data, backColor, foreColor, showText, req.calculateChecksum),
-            
-            BarcodeSymbology.Code39Extended => BarcodeGenerationExamples.GenerateCode39Extended(
-                req.Data, backColor, foreColor, showText, req.calculateChecksum),
-            
-            BarcodeSymbology.Code93 => BarcodeGenerationExamples.GenerateCode93(
-                req.Data, backColor, foreColor, showText, req.calculateChecksum),
-            
-            BarcodeSymbology.Code93Extended => BarcodeGenerationExamples.GenerateCode93Extended(
-                req.Data, backColor, foreColor, showText, req.calculateChecksum),
-            
-            BarcodeSymbology.DeutschePostLeitcode => BarcodeGenerationExamples.GenerateDeutschePostLeitcode(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.DeutschePostIdentcode => BarcodeGenerationExamples.GenerateDeutschePostIdentcode(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.EAN8 => BarcodeGenerationExamples.GenerateEAN8(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.EAN13 => BarcodeGenerationExamples.GenerateEAN13(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.GS1DataBar => BarcodeGenerationExamples.GenerateGS1DataBar(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.Industrial2of5 => BarcodeGenerationExamples.GenerateIndustrial2of5(
-                req.Data, backColor, foreColor, showText, req.calculateChecksum),
-            
-            BarcodeSymbology.Interleaved2of5 => BarcodeGenerationExamples.GenerateInterleaved2of5(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.Matrix2of5 => BarcodeGenerationExamples.GenerateMatrix2of5(
-                req.Data, backColor, foreColor, showText, req.calculateChecksum),
-            
-            BarcodeSymbology.MSIPlessey => BarcodeGenerationExamples.GenerateMSI(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.Pharmacode => BarcodeGenerationExamples.GeneratePharmacode(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.PostNet => BarcodeGenerationExamples.GeneratePostNet(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.IntelligentMailPackage => BarcodeGenerationExamples.GenerateIntelligentMailPackage(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.SSCC18 => BarcodeGenerationExamples.GenerateSSCC18(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.ITF14 => BarcodeGenerationExamples.GenerateITF14(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.UPCSupplemental2 => BarcodeGenerationExamples.GenerateUPCSupplemental2(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.UPCSupplemental5 => BarcodeGenerationExamples.GenerateUPCSupplemental5(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.UPCA => BarcodeGenerationExamples.GenerateUPCA(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.UPCE0 => BarcodeGenerationExamples.GenerateUPCE0(
-                req.Data, backColor, foreColor, showText),
-            
-            BarcodeSymbology.UPCE1 => BarcodeGenerationExamples.GenerateUPCE1(
-                req.Data, backColor, foreColor, showText),
-            
-            _ => throw new ArgumentOutOfRangeException(nameof(symbology), symbology, "Unsupported symbology type.")
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
         };
 
-        return File(barcodeImage, "image/png");
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
     }
-    [HttpGet("snippet/{symbology}")]
-    public IActionResult GetCodeSnippet([ModelBinder(typeof(BarcodeSymbologyModelBinder))] BarcodeSymbology symbology)
+
+    [HttpGet("qr")]
+    public IActionResult QrCode([FromQuery] BarcodeRequest req)
     {
-        var methodName = symbology switch
+        var options = new QRCodeOptions
         {
-            BarcodeSymbology.Aztec => "GenerateAztec",
-            BarcodeSymbology.QrCode => "GenerateQrCode",
-            BarcodeSymbology.MicroQrCode => "GenerateMicroQrCode",
-            BarcodeSymbology.QrCodeGS1 => "GenerateQrCodeGS1",
-            BarcodeSymbology.DataMatrixECC200 => "GenerateDataMatrixECC200",
-            BarcodeSymbology.DataMatrixGS1 => "GenerateDataMatrixGS1",
-            BarcodeSymbology.PDF417 => "GeneratePDF417",
-            BarcodeSymbology.IntelligentMail => "GenerateIntelligentMail",
-            BarcodeSymbology.Codabar => "GenerateCodabar",
-            BarcodeSymbology.Code11 => "GenerateCode11",
-            BarcodeSymbology.Code128 => "GenerateCode128",
-            BarcodeSymbology.GS1_128 => "GenerateGS1128",
-            BarcodeSymbology.Code39 => "GenerateCode39",
-            BarcodeSymbology.Code39Extended => "GenerateCode39Extended",
-            BarcodeSymbology.Code93 => "GenerateCode93",
-            BarcodeSymbology.Code93Extended => "GenerateCode93Extended",
-            BarcodeSymbology.DeutschePostLeitcode => "GenerateDeutschePostLeitcode",
-            BarcodeSymbology.DeutschePostIdentcode => "GenerateDeutschePostIdentcode",
-            BarcodeSymbology.EAN8 => "GenerateEAN8",
-            BarcodeSymbology.EAN13 => "GenerateEAN13",
-            BarcodeSymbology.GS1DataBar => "GenerateGS1DataBar",
-            BarcodeSymbology.Industrial2of5 => "GenerateIndustrial2of5",
-            BarcodeSymbology.Interleaved2of5 => "GenerateInterleaved2of5",
-            BarcodeSymbology.Matrix2of5 => "GenerateMatrix2of5",
-            BarcodeSymbology.MSIPlessey => "GenerateMSI",
-            BarcodeSymbology.Pharmacode => "GeneratePharmacode",
-            BarcodeSymbology.PostNet => "GeneratePostNet",
-            BarcodeSymbology.IntelligentMailPackage => "GenerateIntelligentMailPackage",
-            BarcodeSymbology.SSCC18 => "GenerateSSCC18",
-            BarcodeSymbology.ITF14 => "GenerateITF14",
-            BarcodeSymbology.UPCSupplemental2 => "GenerateUPCSupplemental2",
-            BarcodeSymbology.UPCSupplemental5 => "GenerateUPCSupplemental5",
-            BarcodeSymbology.UPCA => "GenerateUPCA",
-            BarcodeSymbology.UPCE0 => "GenerateUPCE0",
-            BarcodeSymbology.UPCE1 => "GenerateUPCE1",
-            _ => null
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
         };
 
-        if (methodName == null)
-            return NotFound("No code snippet available for this symbology.");
-
-        var filePath = Path.Combine(AppContext.BaseDirectory, "", "BarcodeGenerationExamples.cs");
-        if (!System.IO.File.Exists(filePath))
-            return NotFound("BarcodeGenerationExamples.cs not found.");
-
-        var code = GetMethodCode(filePath, methodName);
-        if (string.IsNullOrWhiteSpace(code))
-            return NotFound("Code snippet not found.");
-
-        return Content(code, "text/plain");
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
     }
 
-    // Helper to extract method code by name (simple version)
-    private static string GetMethodCode(string filePath, string methodName)
+    [HttpGet("micro-qr")]
+    public IActionResult MicroQrCode([FromQuery] BarcodeRequest req)
     {
-        var lines = System.IO.File.ReadAllLines(filePath);
-        var start = Array.FindIndex(lines, l => l.Contains($" {methodName}(") || l.Contains($" {methodName} "));
-        if (start == -1) return string.Empty;
-
-        var codeLines = new List<string>();
-        int braceCount = 0;
-        bool started = false;
-        for (int i = start; i < lines.Length; i++)
+        var options = new MicroQRCodeOptions
         {
-            var line = lines[i];
-            if (!started)
-            {
-                codeLines.Add(line);
-                if (line.Contains("{"))
-                {
-                    started = true;
-                    braceCount = line.Count(c => c == '{') - line.Count(c => c == '}');
-                }
-            }
-            else
-            {
-                codeLines.Add(line);
-                braceCount += line.Count(c => c == '{') - line.Count(c => c == '}');
-                if (braceCount == 0)
-                    break;
-            }
-        }
-        return string.Join(System.Environment.NewLine, codeLines);
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
     }
-    private bool ValidateRequest(BarcodeRequest req, out IActionResult errorResult)
+
+    [HttpGet("gs1-qr")]
+    public IActionResult QrCodeGS1([FromQuery] BarcodeRequest req)
     {
-        if (string.IsNullOrWhiteSpace(req.Data))
+        var options = new QRCodeGS1Options
         {
-            errorResult = BadRequest("Field 'data' is required.");
-            return false;
-        }
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
 
-        if (req.Data.Length > 5000)
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("datamatrix-ecc200")]
+    public IActionResult DataMatrixECC200([FromQuery] BarcodeRequest req)
+    {
+        var options = new DataMatrixOptions
         {
-            errorResult = BadRequest("Field 'data' is too long for this demo (max 5000 chars).");
-            return false;
-        }
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
 
-        errorResult = null!;
-        return true;
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("gs1-datamatrix")]
+    public IActionResult DataMatrixGS1([FromQuery] BarcodeRequest req)
+    {
+        var options = new DataMatrixGS1Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("pdf417")]
+    public IActionResult PDF417([FromQuery] BarcodeRequest req)
+    {
+        var options = new PDF417Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("intelligent-mail")]
+    public IActionResult IntelligentMail([FromQuery] BarcodeRequest req)
+    {
+        var options = new IntelligentMailOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("codabar")]
+    public IActionResult Codabar([FromQuery] BarcodeRequest req)
+    {
+        var options = new CodabarOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("code11")]
+    public IActionResult Code11([FromQuery] BarcodeRequest req)
+    {
+        var options = new Code11Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("code128")]
+    public IActionResult Code128([FromQuery] BarcodeRequest req)
+    {
+        var options = new Code128Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("gs1-128")]
+    public IActionResult GS1128([FromQuery] BarcodeRequest req)
+    {
+        var options = new EAN128Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("code39")]
+    public IActionResult Code39([FromQuery] BarcodeRequest req)
+    {
+        var options = new Code39Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("code39-extended")]
+    public IActionResult Code39Extended([FromQuery] BarcodeRequest req)
+    {
+        var options = new Code39ExtendedOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("code93")]
+    public IActionResult Code93([FromQuery] BarcodeRequest req)
+    {
+        var options = new Code93Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("code93-extended")]
+    public IActionResult Code93Extended([FromQuery] BarcodeRequest req)
+    {
+        var options = new Code93ExtendedOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("deutsche-post-leitcode")]
+    public IActionResult DeutschePostLeitcode([FromQuery] BarcodeRequest req)
+    {
+        var options = new DeutschePostLeitcodeOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("deutsche-post-identcode")]
+    public IActionResult DeutschePostIdentcode([FromQuery] BarcodeRequest req)
+    {
+        var options = new DeutschePostIdentcodeOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("ean8")]
+    public IActionResult EAN8([FromQuery] BarcodeRequest req)
+    {
+        var options = new EAN8Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("ean13")]
+    public IActionResult EAN13([FromQuery] BarcodeRequest req)
+    {
+        var options = new EAN13Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("gs1-databar")]
+    public IActionResult GS1DataBar([FromQuery] BarcodeRequest req)
+    {
+        var options = new DataBarOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("industrial-2of5")]
+    public IActionResult Industrial2of5([FromQuery] BarcodeRequest req)
+    {
+        var options = new Industrial2of5Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("interleaved-2of5")]
+    public IActionResult Interleaved2of5([FromQuery] BarcodeRequest req)
+    {
+        var options = new Interleaved2of5Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("matrix-2of5")]
+    public IActionResult Matrix2of5([FromQuery] BarcodeRequest req)
+    {
+        var options = new Matrix2of5Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("msi-plessey")]
+    public IActionResult MSI([FromQuery] BarcodeRequest req)
+    {
+        var options = new CodeMSIOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("pharmacode")]
+    public IActionResult Pharmacode([FromQuery] BarcodeRequest req)
+    {
+        var options = new PharmacodeOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("postnet")]
+    public IActionResult PostNet([FromQuery] BarcodeRequest req)
+    {
+        var options = new PostNetOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("intelligent-mail-package")]
+    public IActionResult IntelligentMailPackage([FromQuery] BarcodeRequest req)
+    {
+        var options = new IntelligentMailPackageOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("sscc18")]
+    public IActionResult SSCC18([FromQuery] BarcodeRequest req)
+    {
+        var options = new SSCCOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("itf14")]
+    public IActionResult ITF14([FromQuery] BarcodeRequest req)
+    {
+        var options = new ITF14Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("upc-supplemental2")]
+    public IActionResult UPCSupplemental2([FromQuery] BarcodeRequest req)
+    {
+        var options = new UPCSupplemental2Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("upc-supplemental5")]
+    public IActionResult UPCSupplemental5([FromQuery] BarcodeRequest req)
+    {
+        var options = new UPCSupplemental5Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("upca")]
+    public IActionResult UPCA([FromQuery] BarcodeRequest req)
+    {
+        var options = new UPCAOptions
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("upce0")]
+    public IActionResult UPCE0([FromQuery] BarcodeRequest req)
+    {
+        var options = new UPCE0Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
+    }
+
+    [HttpGet("upce1")]
+    public IActionResult UPCE1([FromQuery] BarcodeRequest req)
+    {
+        var options = new UPCE1Options
+        {
+            BackColor = ColorHelper.GetColor(req.BackColor, Color.White),
+            ForeColor = ColorHelper.GetColor(req.ForeColor, Color.Black),
+            ShowText = req.ShowText ?? false
+        };
+
+        using var ms = new MemoryStream();
+        using var generator = new BarcodeGenerator(options);
+        generator.Export(req.Data, ms, DXImageFormat.Png);
+        return File(ms.ToArray(), "image/png");
     }
 }

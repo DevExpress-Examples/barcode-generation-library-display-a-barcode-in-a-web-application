@@ -1,333 +1,289 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Barcode Demo API</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <main>
-        <header>
-            <h1>Barcode Demo API</h1>
-            <p class="hint">
-                GET <code>/barcode/{symbology}?data={data}</code> with query parameters. Use the form to try different barcode
-                presets.
-            </p>
-        </header>
+<main>
+    <h1 class="page-title">Barcode Demo API</h1>
+    <section class="panel">
+        <form id="barcodeForm">
+            <fieldset>
+                <legend>Payload</legend>
 
-        <section class="panel">
-            <form id="barcodeForm">
-                <fieldset>
-                    <legend>Payload</legend>
+                <label for="symbology">Symbology</label>
+                <select id="symbology" required>
+                    <optgroup label="2D">
+                        <option value="aztec">Aztec Code</option>
+                        <option value="datamatrix-ecc200">ECC200 - Data Matrix</option>
+                        <option value="gs1-datamatrix">GS1 - Data Matrix</option>
+                        <option value="intelligent-mail">Intelligent Mail</option>
+                        <option value="pdf417">PDF417</option>
+                        <option value="qr">QR Code</option>
+                        <option value="micro-qr">Micro QR Code</option>
+                        <option value="gs1-qr">GS1 - QR Code</option>
+                    </optgroup>
+                    <optgroup label="1D">
+                        <option value="codabar">Codabar</option>
+                        <option value="code11">Code 11 (USD-8)</option>
+                        <option value="code128">Code 128</option>
+                        <option value="code39">Code 39 (USD-3)</option>
+                        <option value="code39-extended">Code 39 Extended</option>
+                        <option value="code93">Code 93</option>
+                        <option value="code93-extended">Code 93 Extended</option>
+                        <option value="deutsche-post-leitcode">Deutsche Post Leitcode</option>
+                        <option value="deutsche-post-identcode">Deutsche Post Identcode</option>
+                        <option value="ean8">EAN-8</option>
+                        <option value="ean13">EAN-13</option>
+                        <option value="gs1-128">GS1-128 (EAN-128 / UCC)</option>
+                        <option value="gs1-databar">GS1 - DataBar</option>
+                        <option value="industrial-2of5">Industrial 2 of 5</option>
+                        <option value="intelligent-mail-package">Intelligent Mail Package</option>
+                        <option value="interleaved-2of5">Interleaved 2 of 5</option>
+                        <option value="matrix-2of5">Matrix 2 of 5</option>
+                        <option value="msi-plessey">MSI - Plessey</option>
+                        <option value="pharmacode">Pharmacode</option>
+                        <option value="postnet">PostNet</option>
+                        <option value="sscc18">SSCC-18</option>
+                        <option value="itf14">ITF-14</option>
+                        <option value="upc-supplemental2">UPC Supplemental 2</option>
+                        <option value="upc-supplemental5">UPC Supplemental 5</option>
+                        <option value="upca">UPC-A</option>
+                        <option value="upce0">UPC-E0</option>
+                        <option value="upce1">UPC-E1</option>
+                    </optgroup>
+                </select>
 
-                    <label for="symbology">Symbology</label>
-                    <select id="symbology" required>
-                        <optgroup label="2D">
-                            <option value="aztec">Aztec Code</option>
-                            <option value="datamatrix-ecc200">ECC200 - Data Matrix</option>
-                            <option value="gs1-datamatrix">GS1 - Data Matrix</option>
-                            <option value="intelligent-mail">Intelligent Mail</option>
-                            <option value="pdf417">PDF417</option>
-                            <option value="qr">QR Code</option>
-                            <option value="micro-qr">Micro QR Code</option>
-                            <option value="gs1-qr">GS1 - QR Code</option>
-                        </optgroup>
-                        <optgroup label="1D">
-                            <option value="codabar">Codabar</option>
-                            <option value="code11">Code 11 (USD-8)</option>
-                            <option value="code128">Code 128</option>
-                            <option value="code39">Code 39 (USD-3)</option>
-                            <option value="code39-extended">Code 39 Extended</option>
-                            <option value="code93">Code 93</option>
-                            <option value="code93-extended">Code 93 Extended</option>
-                            <option value="deutsche-post-leitcode">Deutsche Post Leitcode</option>
-                            <option value="deutsche-post-identcode">Deutsche Post Identcode</option>
-                            <option value="ean8">EAN-8</option>
-                            <option value="ean13">EAN-13</option>
-                            <option value="gs1-128">GS1-128 (EAN-128 / UCC)</option>
-                            <option value="gs1-databar">GS1 - DataBar</option>
-                            <option value="industrial-2of5">Industrial 2 of 5</option>
-                            <option value="intelligent-mail-package">Intelligent Mail Package</option>
-                            <option value="interleaved-2of5">Interleaved 2 of 5</option>
-                            <option value="matrix-2of5">Matrix 2 of 5</option>
-                            <option value="msi-plessey">MSI - Plessey</option>
-                            <option value="pharmacode">Pharmacode</option>
-                            <option value="postnet">PostNet</option>
-                            <option value="sscc18">SSCC-18</option>
-                            <option value="itf14">ITF-14</option>
-                            <option value="upc-supplemental2">UPC Supplemental 2</option>
-                            <option value="upc-supplemental5">UPC Supplemental 5</option>
-                            <option value="upca">UPC-A</option>
-                            <option value="upce0">UPC-E0</option>
-                            <option value="upce1">UPC-E1</option>
-                        </optgroup>
-                    </select>
+                <label for="data">Data
+                    <span class="inline-hint">Provide the encoded value; presets inject sample GS1 / control characters where needed.</span>
+                </label>
+                <textarea id="data" placeholder="https://example.com/ticket/839201" required rows="3"></textarea>
+            </fieldset>
 
-                    <div id="aztecEccLevelContainer" style="display:none; margin-top:8px;">
-                        <label for="aztecEccLevel">Aztec Error Correction Level</label>
-                        <select id="aztecEccLevel">
-                            <option value="Level1">Level1</option>
-                            <option value="Level2">Level2</option>
-                            <option value="Level3">Level3</option>
-                            <option value="Level4">Level4</option>
-                        </select>
-                    </div>
-
-
-                    <div id="ChecksumContainer" style="display:none; margin-top:8px;">
-                        <label for="calculateChecksum">Calculate Checksum</label>
-                        <select id="calculateChecksum">
+            <fieldset>
+                <legend>Styling</legend>
+                <div class="style-grid">
+                    <div class="field">
+                        <span class="field-label">Show text</span>
+                        <select id="showText">
                             <option value="false">false</option>
                             <option value="true">true</option>
                         </select>
                     </div>
 
-                    <div id="LogoContainer" style="display:none; margin-top:8px;">
-                        <label for="displayLogo">Display Logo</label>
-                        <select id="displayLogo">
-                            <option value="false">false</option>
-                            <option value="true">true</option>
-                        </select>
+                    <div class="field">
+                        <span class="field-label">Back color</span>
+                        <div class="color-field">
+                            <input id="backColorPicker" type="color" value="#FFFFFF"/>
+                            <input id="backColor" pattern="#[0-9a-fA-F]{6}" placeholder="#FFFFFF" type="text"/>
+                        </div>
                     </div>
 
-                    <label for="data">
-                        Data
-                        <span class="inline-hint">Provide the encoded value; presets inject sample GS1 / control characters where needed.</span>
-                    </label>
-                    <textarea id="data" placeholder="https://example.com/ticket/839201" required rows="3"></textarea>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Styling</legend>
-                    <div class="grid3">
-                        <label for="showText">
-                            Show text
-                            <select id="showText">
-                                <option value="false">false</option>
-                                <option value="true">true</option>
-                            </select>
-                        </label>
-                        <label for="backColor">
-                            Back color (hex)
-                            <input id="backColor" pattern="#?[0-9a-fA-F]{6}" placeholder="#FFFFFF" type="text" />
-                        </label>
-
-                        <label for="foreColor">
-                            Foreground color (hex)
-                            <input id="foreColor" pattern="#?[0-9a-fA-F]{6}" placeholder="#000000" type="text" />
-                        </label>
+                    <div class="field">
+                        <span class="field-label">Foreground color</span>
+                        <div class="color-field">
+                            <input id="foreColorPicker" type="color" value="#000000"/>
+                            <input id="foreColor" pattern="#[0-9a-fA-F]{6}" placeholder="#000000" type="text"/>
+                        </div>
                     </div>
-                </fieldset>
-
-                <div class="actions">
-                    <button id="renderBtn" type="submit">Render barcode</button>
-                    <span aria-live="polite" id="status" role="status"></span>
                 </div>
-            </form>
-        </section>
+            </fieldset>
 
-        <section class="panel preview">
-            <h2 style="margin-top:0">Preview</h2>
-            <p class="hint">Rendered image and request payload for quick copy/paste into other clients.</p>
-            <pre id="payloadPreview">{}</pre>
+            <div class="actions">
+                <button id="renderBtn" type="submit">Render barcode</button>
+                <span aria-live="polite" id="status" role="status"></span>
+            </div>
+        </form>
+    </section>
+
+    <section id="resultCard" class="result-card" hidden>
+        <div class="result-header">
+            <span id="resultTitle" class="result-title"></span>
+            <a id="downloadBtn" class="download-btn" download="barcode.png">Download PNG</a>
+        </div>
+        <div class="result-body">
             <div id="out"></div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
-    <script>
-        const els = {
-            form: document.getElementById('barcodeForm'),
-            symbology: document.getElementById('symbology'),
-            data: document.getElementById('data'),
-            showText: document.getElementById('showText'),
-            backColor: document.getElementById('backColor'),
-            foreColor: document.getElementById('foreColor'),
-            status: document.getElementById('status'),
-            out: document.getElementById('out'),
-            payloadPreview: document.getElementById('payloadPreview'),
-            renderBtn: document.getElementById('renderBtn'),
-            aztecEccLevel: document.getElementById('aztecEccLevel'),
-            aztecEccLevelContainer: document.getElementById('aztecEccLevelContainer'),
-            calculateChecksum: document.getElementById('calculateChecksum'),
-            ChecksumContainer: document.getElementById('ChecksumContainer'),
-            displayLogo: document.getElementById('displayLogo'),
-            LogoContainer: document.getElementById('LogoContainer')
+<script>
+    const els = {
+        form: document.getElementById('barcodeForm'),
+        symbology: document.getElementById('symbology'),
+        data: document.getElementById('data'),
+        showText: document.getElementById('showText'),
+        backColor: document.getElementById('backColor'),
+        foreColor: document.getElementById('foreColor'),
+        backColorPicker: document.getElementById('backColorPicker'),
+        foreColorPicker: document.getElementById('foreColorPicker'),
+        status: document.getElementById('status'),
+        out: document.getElementById('out'),
+        resultCard: document.getElementById('resultCard'),
+        resultTitle: document.getElementById('resultTitle'),
+        downloadBtn: document.getElementById('downloadBtn'),
+        renderBtn: document.getElementById('renderBtn')
+    };
 
-        };
+    const baseDefaults = {
+        showText: false,
+        backColor: '#FFFFFF',
+        foreColor: '#000000'
+    };
 
-        const baseDefaults = {
-            showText: false,
-            backColor: '#FFFFFF',
-            foreColor: '#000000'
-        };
+    const symbologyDefaults = {
+        'aztec': {data: 'https://example.com/ticket/839201'},
+        'qr': {data: 'https://www.devexpress.com'},
+        'gs1-qr': {data: '(01)09521234543213(8200)https://www.devexpress.com'},
+        'micro-qr': {data: 'HELLO123'},
+        'datamatrix-ecc200': {data: 'ABC1234567890'},
+        'gs1-datamatrix': {data: '(01)09521234543213(10)ABC123(17)280101'},
+        'pdf417': {data: 'PDF417 DEMO 1234567890'},
+        'codabar': {data: '0123456789'},
+        'code11': {data: '123-45'},
+        'code128': {data: '<FNC1>12345<FNC2>67<FNC3>89'},
+        'gs1-128': {data: '(01)09521234543213(10)ABC123'},
+        'code39': {data: 'CODE39'},
+        'code39-extended': {data: 'Code39 ext: !@#$%'},
+        'code93': {data: 'CODE93-123'},
+        'code93-extended': {data: 'Code93 ext: abcXYZ!?'},
+        'ean8': {data: '9638507'},
+        'ean13': {data: '590123412345'},
+        'upca': {data: '72527273070'},
+        'upce0': {data: '4210000526'},
+        'upce1': {data: '4210000526'},
+        'upc-supplemental2': {data: '4210000526'},
+        'upc-supplemental5': {data: '4210000526'},
+        'itf14': {data: '0123456709498765432101234567891'},
+        'sscc18': {data: '12345678901234567'},
+        'postnet': {data: '123456789'},
+        'industrial-2of5': {data: '12345670'},
+        'interleaved-2of5': {data: '0123456709498765432101234567891'},
+        'matrix-2of5': {data: '12345670'},
+        'msi-plessey': {data: '1234567'},
+        'pharmacode': {data: '123456'},
+        'deutsche-post-leitcode': {data: '12345678901234'},
+        'deutsche-post-identcode': {data: '12345678901'},
+        'gs1-databar': {data: '(01)09521234543213'},
+        'intelligent-mail': {data: '92123912345678123456'},
+        'intelligent-mail-package': {data: '9212391234567812345671'}
+    };
 
-        const symbologyDefaults = {
-            'aztec': { data: 'https://example.com/ticket/839201' },
-            'qr': { data: 'https://www.devexpress.com' },
-            'gs1-qr': { data: '(01)09521234543213(8200)https://www.devexpress.com' },
-            'micro-qr': { data: 'HELLO123' },
-            'datamatrix-ecc200': { data: 'ABC1234567890' },
-            'gs1-datamatrix': { data: '(01)09521234543213(10)ABC123(17)280101' },
-            'pdf417': { data: 'PDF417 DEMO 1234567890' },
-            'codabar': { data: '0123456789' },
-            'code11': { data: '123-45' },
-            'code128': { data: '<FNC1>12345<FNC2>67<FNC3>89' },
-            'gs1-128': { data: '(01)09521234543213(10)ABC123' },
-            'code39': { data: 'CODE39' },
-            'code39-extended': { data: 'Code39 ext: !@#$%' },
-            'code93': { data: 'CODE93-123' },
-            'code93-extended': { data: 'Code93 ext: abcXYZ!?' },
-            'ean8': { data: '9638507' },
-            'ean13': { data: '590123412345' },
-            'upca': { data: '72527273070' },
-            'upce0': { data: '4210000526' },
-            'upce1': { data: '4210000526' },
-            'upc-supplemental2': { data: '4210000526' },
-            'upc-supplemental5': { data: '4210000526' },
-            'itf14': { data: '0123456709498765432101234567891' },
-            'sscc18': { data: '12345678901234567' },
-            'postnet': { data: '123456789' },
-            'industrial-2of5': { data: '12345670' },
-            'interleaved-2of5': { data: '0123456709498765432101234567891' },
-            'matrix-2of5': { data: '12345670' },
-            'msi-plessey': { data: '1234567' },
-            'pharmacode': { data: '123456' },
-            'deutsche-post-leitcode': { data: '12345678901234' },
-            'deutsche-post-identcode': { data: '12345678901' },
-            'gs1-databar': { data: '(01)09521234543213' },
-            'intelligent-mail': { data: '92123912345678123456' },
-            'intelligent-mail-package': { data: '9212391234567812345671' }
-        };
+    function normalizeHex(val) {
+        let h = val.trim();
+        if (!h.startsWith('#')) h = '#' + h;
+        return h.toUpperCase();
+    }
 
-        function applyDefaults(symbology) {
-            const preset = symbologyDefaults[symbology] ?? {};
-            els.data.value = preset.data ?? '';
-            els.showText.value = String(preset.showText ?? baseDefaults.showText);
+    function syncPickerToText(picker, textInput) {
+        picker.addEventListener('input', () => {
+            textInput.value = picker.value.toUpperCase();
+            updatePayloadPreview();
+        });
+        textInput.addEventListener('input', () => {
+            const hex = normalizeHex(textInput.value);
+            if (/^#[0-9A-Fa-f]{6}$/.test(hex)) picker.value = hex;
+        });
+    }
+
+    syncPickerToText(els.backColorPicker, els.backColor);
+    syncPickerToText(els.foreColorPicker, els.foreColor);
+
+    function applyDefaults(symbology, resetAll) {
+        const preset = symbologyDefaults[symbology] ?? {};
+        els.data.value = preset.data ?? '';
+        els.showText.value = String(preset.showText ?? baseDefaults.showText);
+        if (resetAll || 'backColor' in preset) {
             els.backColor.value = preset.backColor ?? baseDefaults.backColor;
+            els.backColorPicker.value = normalizeHex(els.backColor.value);
+        }
+        if (resetAll || 'foreColor' in preset) {
             els.foreColor.value = preset.foreColor ?? baseDefaults.foreColor;
-            // Aztec ECC Level UI
-            if (symbology === 'aztec') {
-                els.aztecEccLevelContainer.style.display = '';
-            } else {
-                els.aztecEccLevelContainer.style.display = 'none';
-                els.aztecEccLevel.value = 'Level1';
-            }
-            if (els.symbology.value === 'code39-extended' || els.symbology.value === 'code39' ||
-                els.symbology.value === 'code93-extended' || els.symbology.value === 'code93' ||
-                els.symbology.value === 'industrial-2of5' || els.symbology.value === 'matrix-2of5') {
-                els.ChecksumContainer.style.display = '';
-            }
-            else {
-                els.ChecksumContainer.style.display = 'none';
-                els.calculateChecksum.value = 'false';
-            }
-            if (els.symbology.value === 'qr') {
-                els.LogoContainer.style.display = '';
-            }
-            else {
-                els.LogoContainer.style.display = 'none';
-                els.displayLogo.value = 'false';
-            }
-            updatePayloadPreview();
+            els.foreColorPicker.value = normalizeHex(els.foreColor.value);
         }
+        updatePayloadPreview();
+    }
 
-        function getRequestPayload() {
-            const payload = {
-                data: els.data.value.trim(),
-                showText: els.showText.value === 'true',
-                backColor: els.backColor.value || baseDefaults.backColor,
-                foreColor: els.foreColor.value || baseDefaults.foreColor
-            };
-            if (els.symbology.value === 'aztec' && els.aztecEccLevel.value !== 'Default') {
-                payload.aztecErrorCorrectionLevel = els.aztecEccLevel.value;
+    function getRequestPayload() {
+        return {
+            data: els.data.value.trim(),
+            showText: els.showText.value === 'true',
+            backColor: els.backColor.value || baseDefaults.backColor,
+            foreColor: els.foreColor.value || baseDefaults.foreColor
+        };
+    }
+
+    function updatePayloadPreview() {}
+
+    function setStatus(message, type = '') {
+        els.status.textContent = message;
+        els.status.className = type;
+    }
+
+    async function renderBarcode() {
+        const symbology = els.symbology.value;
+        const label = els.symbology.options[els.symbology.selectedIndex].text;
+        const payload = getRequestPayload();
+
+        els.renderBtn.disabled = true;
+        setStatus('Rendering…');
+        els.out.innerHTML = '';
+        els.resultCard.hidden = true;
+
+        try {
+            const params = new URLSearchParams({
+                data: payload.data,
+                showText: payload.showText.toString(),
+                backColor: payload.backColor,
+                foreColor: payload.foreColor
+            });
+
+            const res = await fetch(`/barcode/${encodeURIComponent(symbology)}?${params}`, {
+                method: 'GET'
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                setStatus('API returned an error.', 'error');
+                els.resultCard.hidden = false;
+                els.resultTitle.textContent = 'Error';
+                els.downloadBtn.hidden = true;
+                els.out.innerHTML = `<pre>${errorText}</pre>`;
+                return;
             }
-            if (
-                (els.symbology.value === 'code39-extended' || els.symbology.value === 'code39' ||
-                    els.symbology.value === 'code93-extended' || els.symbology.value === 'code93' ||
-                    els.symbology.value === 'industrial-2of5' || els.symbology.value === 'matrix-2of5') &&
-                els.calculateChecksum.value !== 'Default') {
-                payload.calculateChecksum = els.calculateChecksum.value;
-            }
-            if (els.symbology.value === 'qr') {
-                payload.displayLogo = els.displayLogo.value;
-            }
-            return payload;
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            els.out.innerHTML = `<img src="${url}" alt="${label}" />`;
+            els.resultTitle.textContent = label;
+            els.downloadBtn.href = url;
+            els.downloadBtn.download = `${symbology}.png`;
+            els.downloadBtn.hidden = false;
+            els.resultCard.hidden = false;
+            setStatus('Success!', 'success');
+        } catch (err) {
+            setStatus('Failed to reach the API.', 'error');
+            const copy = err instanceof Error ? err.message : String(err);
+            els.resultCard.hidden = false;
+            els.resultTitle.textContent = 'Error';
+            els.downloadBtn.hidden = true;
+            els.out.innerHTML = `<pre>${copy}</pre>`;
+        } finally {
+            els.renderBtn.disabled = false;
         }
+    }
 
-        function updatePayloadPreview() {
-            const payload = getRequestPayload();
-            els.payloadPreview.textContent = JSON.stringify(payload, null, 2);
-        }
+    els.symbology.addEventListener('change', () => applyDefaults(els.symbology.value));
+    els.form.addEventListener('input', () => updatePayloadPreview());
+    els.form.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        renderBarcode();
+    });
 
-        function setStatus(message, type = '') {
-            els.status.textContent = message;
-            els.status.className = type;
-        }
-
-        async function renderBarcode() {
-            const symbology = els.symbology.value;
-            const payload = getRequestPayload();
-
-            els.renderBtn.disabled = true;
-            setStatus('Rendering…');
-            els.out.innerHTML = '';
-
-            try {
-                const params = new URLSearchParams({
-                    data: payload.data,
-                    showText: payload.showText.toString(),
-                    backColor: payload.backColor,
-                    foreColor: payload.foreColor
-                });
-                if (symbology === 'aztec' && els.aztecEccLevel.value !== 'Default') {
-                    params.append('AztecErrorCorrectionLevel', els.aztecEccLevel.value);
-                }
-                if ((els.symbology.value === 'code39-extended' || els.symbology.value === 'code39' ||
-                    els.symbology.value === 'code93-extended' || els.symbology.value === 'code93' ||
-                    els.symbology.value === 'industrial-2of5' || els.symbology.value === 'matrix-2of5')
-                    && els.calculateChecksum.value !== 'Default') {
-                    params.append('calculateChecksum', els.calculateChecksum.value);
-                }
-                if (els.symbology.value === 'qr') {
-                    params.append('displayLogo', els.displayLogo.value);
-                }
-                const res = await fetch(`/barcode/${encodeURIComponent(symbology)}?${params}`, {
-                    method: 'GET'
-                });
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    setStatus('API returned an error.', 'error');
-                    els.out.innerHTML = `<pre>${errorText}</pre>`;
-                    return;
-                }
-
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                els.out.innerHTML = `<img src="${url}" alt="Rendered barcode" />`;
-                setStatus('Success! Barcode rendered.', 'success');
-            } catch (err) {
-                setStatus('Failed to reach the API.', 'error');
-                const copy = err instanceof Error ? err.message : String(err);
-                els.out.innerHTML = `<pre>${copy}</pre>`;
-            } finally {
-                els.renderBtn.disabled = false;
-            }
-        }
-
-        els.symbology.addEventListener('change', () => {
-            applyDefaults(els.symbology.value);
-        });
-        els.form.addEventListener('input', () => {
-            updatePayloadPreview();
-        });
-        els.form.addEventListener('submit', (evt) => {
-            evt.preventDefault();
-            renderBarcode();
-        });
-
-        // Initial load
-        applyDefaults(els.symbology.value);
-        setStatus('Pick a symbology and hit render.');
-    </script>
+    applyDefaults(els.symbology.value, true);
+    setStatus('Pick a symbology and hit render.');
+</script>
 </body>
 </html>
