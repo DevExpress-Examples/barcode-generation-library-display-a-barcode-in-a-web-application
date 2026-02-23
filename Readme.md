@@ -92,7 +92,7 @@ dotnet add package DevExpress.AIIntegration.Docs
  
 ## Files to Review
  
-* [BarcodeGenerationExamples.cs](/CS/BarcodeGenerationExamples.cs)
+* [BarcodeController.cs](/CS/Controllers/BarcodeController.cs)
 * [index.html](/CS/wwwroot/index.html)
  
 <!-- feedback -->
@@ -102,3 +102,4 @@ dotnet add package DevExpress.AIIntegration.Docs
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
